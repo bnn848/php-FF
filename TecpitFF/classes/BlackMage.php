@@ -6,7 +6,7 @@ class BlackMage extends Human {
     const MAX_HITPOINT = 80;
     private $hitPoint = self::MAX_HITPOINT;
     private $attackPoint = 10;
-    private $intelligence = 40; // 魔法の攻撃力を追加する
+    private $intelligence = 30; // 魔法の攻撃力を追加する
     
     /* constructor */
     public function __construct($name) { // 外部からBraveのpropsを保護する
@@ -28,10 +28,10 @@ class BlackMage extends Human {
         $enemyIndex = rand(0, count($enemies) - 1);
         $enemy = $enemies[$enemyIndex];
         
-        if(rand(1,100) >= 20) { // 20%の確率
+        if(rand(1,100) >= 50) { // 50%の確率
             echo "「" . $this->getName() . "」は魔法を唱えた！\n";
             echo "「バルス」!!\n";
-            echo $enemy->getName() . "に" . $this->intelligence . "のダメージ！\n";
+            echo $enemy->getName() . "に" . $this->intelligence * 1.5 . "のダメージ！\n";
             $enemy->tookDamage($this->intelligence * 1.5);
         } else {
             parent::doAttack($enemies);

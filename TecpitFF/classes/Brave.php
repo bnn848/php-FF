@@ -35,6 +35,9 @@ class Brave extends Human {
             parent::doAttack($enemies); // 親クラスメソッドを呼び出す::
         }
         return true;
-        
+    }
+    
+    public function getAttackPoint() {
+        return $hits->attackPoint;
     }
 }
