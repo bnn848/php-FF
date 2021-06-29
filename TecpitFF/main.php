@@ -1,26 +1,35 @@
 <?php
 
 /* ファイルをロードする */
-require_once('./classes/Lives.php');
-require_once('./classes/Human.php');
-require_once('./classes/Brave.php');
-require_once('./classes/Enemy.php');
-require_once('./classes/WhiteMage.php');
-require_once('./classes/BlackMage.php');
-require_once('./classes/Message.php');
+// require_once('./classes/Lives.php');
+// require_once('./classes/Human.php');
+// require_once('./classes/Brave.php');
+// require_once('./classes/Enemy.php');
+// require_once('./classes/WhiteMage.php');
+// require_once('./classes/BlackMage.php');
+// require_once('./classes/Message.php');
+require_once('./lib/Loader.php'); // 自動ロード化する
+require_once('./lib/Utility.php');
+
+$loader = new Loader();
+
+$loader->regDirectory(__DIR__ . '/classes'); // __DIR__ : 現在のフルパスを取得
+$loader->regDirectory(__DIR__ . '/classes/constants');
+$loader->register();
 
 /* クラスをインスタンス化（クラスへの参照を可能にする） */
 // $player = new Brave("ももちゃん"); // プレイヤー
 // $goblin = new Enemy("ゴブリン"); // ゴブリン（敵キャラ）
 $members = array(); // 各クラスインスタンスを配列で保持する
-$members[] = new Brave('ゆきちくん');
-$members[] = new WhiteMage('いちよちゃん');
-$members[] = new BlackMage('ひでよくん');
+$members[] = new Brave(CharacterName::YUKICHI);
+// $members[] = Brave::getInstance(CharacterName::YUKICHI);
+$members[] = WhiteMage::getInstance(CharacterName::ICHIYO);
+$members[] = BlackMage::getInstance(CharacterName::HIDEYO);
 
 $enemies = array(); // 初期化はこのように記述する
-$enemies[] = new Enemy('ごぶりん1', 30);
-$enemies[] = new Enemy('ごぶりん2', 35);
-$enemies[] = new Enemy('ごぶりん3', 40);
+$enemies[] = new Enemy(EnemyName::GOBLINS1 , 30);
+$enemies[] = new Enemy(EnemyName::GOBLINS2, 35);
+$enemies[] = new Enemy(EnemyName::GOBLINS3, 40);
 
 /* nameプロパティを設定 */
 // $player->name = "ももちゃん"; // 引数1に名前を渡すことでconstructorにセットする
@@ -32,23 +41,6 @@ $isFinishFlg = false; // 初期値falseで戦闘終了の際にtrueにする
 
 /* messageObj */
 $messageObj = new Message;
-
-/* 終了条件の判定メソッドを定義 */
-function isFinish($objects) {
-    $deathCount = 0;
-    foreach($objects as $object) {
-        if($object->getHitPoint() > 0) {
-            return false;
-        }
-        $deathCount++;
-    }
-    
-    if($deathCount === count($objects)) {
-        return true;
-    }
-}
-
-
 
 /* 以下、繰り返し処理 どちらも生きている限り以下の処理を繰り返す */
 // getterメソッドじゃないとアクセスできない

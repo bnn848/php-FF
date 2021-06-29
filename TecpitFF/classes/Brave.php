@@ -8,13 +8,24 @@ class Brave extends Human {
     public $hitPoint = self::MAX_HITPOINT; // self:: 子クラス自身を指す
     private $attackPoint = 30;
     
-    /* constructor */
-    public function __construct($name) { // 外部からBraveのpropsを保護する
+    /* 自身のクラスのインスタンス */
+    private static $instance; // インスタンス自体はプライベート
+    
+    /* constructor */  // 定数はプライベートにする
+    private function __construct($name) { // 外部からBraveのpropsを保護する
         parent::__construct( // parent:: 継承元のメソッドを呼び出す
             $name, // nameは書き換えないことを明示する
             $this->hitPoint,
             $this->attackPoint
         );
+    }
+    
+    // シングルトン（インスタンスへのアクセスはここを通す）
+    public static function getInstance($name) {
+        if(empty(self::$instance)) { //empty() : 空ならtrue, self:: はhumanクラスを指す
+            self::$instance = new Brave($name);
+        }
+        return self::$instance;
     }
     
     /* スキルの発動(human.doAttackを上書きする)*/

@@ -8,14 +8,25 @@ class WhiteMage extends Human {
     private $attackPoint = 10;
     private $intelligence = 30; // 魔法の攻撃力を追加する
     
+    /* 自身のクラスのインスタンス */
+    private static $instance; // インスタンス自体はプライベート
+    
     /* constructor */
-    public function __construct($name) { // 外部からBraveのpropsを保護する
+    private function __construct($name) { // 外部からBraveのpropsを保護する
         parent::__construct( // parent:: 継承元のメソッドを呼び出す
             $name, // nameは書き換えないことを明示する
             $this->hitPoint,
             $this->attackPoint,
             $this->intelligence
         );
+    }
+    
+    // シングルトン（インスタンスへのアクセスはここを通す）
+    public static function getInstance($name) {
+        if(empty(self::$instance)) { //empty() : 空ならtrue, self:: はhumanクラスを指す
+            self::$instance = new Brave($name);
+        }
+        return self::$instance;
     }
     
     /* doAttackはオーバーライドできない */
