@@ -15,10 +15,10 @@ $members[] = new Brave('ゆきちくん');
 $members[] = new WhiteMage('いちよちゃん');
 $members[] = new BlackMage('ひでよくん');
 
-$enemys = array(); // 初期化はこのように記述する
-$enemys[] = new Enemy('ごぶりん1', 20);
-$enemys[] = new Enemy('ごぶりん2', 25);
-$enemys[] = new Enemy('ごぶりん3', 30);
+$enemies = array(); // 初期化はこのように記述する
+$enemies[] = new Enemy('ごぶりん1', 20);
+$enemies[] = new Enemy('ごぶりん2', 25);
+$enemies[] = new Enemy('ごぶりん3', 30);
 
 /* nameプロパティを設定 */
 // $player->name = "ももちゃん"; // 引数1に名前を渡すことでconstructorにセットする
@@ -48,7 +48,7 @@ while(!$isFinish) { // $isfinish = falseの間繰り返す
     echo "\n";
     
     // 敵パーティ
-    foreach($enemys as $enemy) {
+    foreach($enemies as $enemy) {
         echo $enemy->getName() . ":" . $enemy->getHitPoint() . "/" . $enemy::MAX_HITPOINT .  "\n"; // オブジェクト定数の参照は::
     }
     echo "\n";
@@ -61,24 +61,24 @@ while(!$isFinish) { // $isfinish = falseの間繰り返す
     // 味方パーティの攻撃
     foreach($members as $member) {
         // 攻撃対象をランダムで決定
-        $enemyIndex = rand(0, count($enemys) - 1); // 0~キャラの数-1までインデックスを指定
-        $enemy = $enemys[$enemyIndex]; // 指定したインデックスでキャラを特定
+        $enemyIndex = rand(0, count($enemies) - 1); // 0~キャラの数-1までインデックスを指定
+        $enemy = $enemies[$enemyIndex]; // 指定したインデックスでキャラを特定
         
         // 回復スキルでは味方オブジェクトも返す必要があるため、条件分岐
         if(get_class($member) == "WhiteMage") { // get_class(): クラスインスタンスを返すメソッド
-            $member->doAttackWhiteMage($enemy, $member);
+            $member->doAttackWhiteMage($enemies, $members);
         } else {
-            $member->doAttack($enemy); // 引数に攻撃対象を受け取る
+            $member->doAttack($enemies); // 引数に攻撃対象を受け取る
         }
         echo "\n";
     }
     echo "\n";
     
     // 敵パーティの攻撃
-    foreach($enemys as $enemy) {
-        $memberIndex = rand(0, count($members) - 1); // count():引数の数を返す
-        $member = $members[$memberIndex];
-        $enemy->doAttack($member);
+    foreach($enemies as $enemy) {
+        // $memberIndex = rand(0, count($members) - 1); // count():引数の数を返す
+        // $member = $members[$memberIndex];
+        $enemy->doAttack($members);
         echo "\n";
     }
     
@@ -108,7 +108,7 @@ while(!$isFinish) { // $isfinish = falseの間繰り返す
     // 敵全滅チェック
     $killCount = 0;
     
-    foreach($enemys as $enemy) {
+    foreach($enemies as $enemy) {
         if($enemy->getHitPoint() > 0) {
             $isfinish = false;
             break;
@@ -116,7 +116,7 @@ while(!$isFinish) { // $isfinish = falseの間繰り返す
         $killCount += 1;
     }
     
-    if($killCount === count($enemys)) {
+    if($killCount === count($enemies)) {
         $isFinish = true;
         echo "You are Win!!!\n\n";
         break;
@@ -136,7 +136,7 @@ foreach($members as $member) {
 }
 echo "\n";
 
-foreach($enemys as $enemy) {
+foreach($enemies as $enemy) {
 echo $enemy->getName() . ":" . $enemy->getHitPoint() . "/" . $enemy::MAX_HITPOINT . "\n";
 }
-
+echo "\n";

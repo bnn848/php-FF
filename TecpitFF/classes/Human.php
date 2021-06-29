@@ -24,7 +24,15 @@ class Human {
     }
     
     // doAttack
-    public function doAttack($enemy) {
+    public function doAttack($enemies) {
+        
+        if($this->hitPoint <= 0) {
+            return false;
+        }
+        
+        $enemyIndex = rand(0, count($enemies) - 1 );
+        $enemy = $enemies[$enemyIndex];
+        
         echo "「".$this->getName() . "」の攻撃！\n"; // クラス自身のプロパティを参照
         echo "「".$enemy->getName() . "」に" . $this->attackPoint . "のダメージ！\n";
         $enemy->tookDamage($this->attackPoint);
@@ -41,6 +49,7 @@ class Human {
     
     // recoveryDamage
     public function recoveryDamage($heal, $target) { // intelliganceを$healで受け取る
+        
         $this->hitPoint += $heal; // hitpointを$healの値増やす
         if($this->hitPoint > $target::MAX_HITPOINT) { // targetの継承元を参照
             $this->hitPoint = $target::MAX_HITPOINT;

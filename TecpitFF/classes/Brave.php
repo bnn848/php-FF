@@ -18,14 +18,21 @@ class Brave extends Human {
     }
     
     /* スキルの発動(human.doAttackを上書きする)*/
-    public function doAttack($enemy) {
-        if (rand(1, 100) <= 30) { // min~maxの乱数生成 === 1の時（3分の１の確率）
+    public function doAttack($enemies) {
+        if($this->hitPoint <= 0) {
+            return false;
+        }
+        
+        $enemyIndex = rand(0, count($enemies) -1);
+        $enemy = $enemies[$enemyIndex];
+        
+        if (rand(1, 100) <= 30) { // 30%の確率
             echo "「" . $this->getName() . "」はスキルを発動した！\n";
             echo "「肉球パンチ」!!\n";
             echo $enemy->getName() . "に" . $this->attackPoint  * 1.5 . "のダメージ！\n";
             $enemy->tookDamage($this->attackPoint * 1.5);
         } else {
-            parent::doAttack($enemy); // 親クラスメソッドを呼び出す::
+            parent::doAttack($enemies); // 親クラスメソッドを呼び出す::
         }
         return true;
         
