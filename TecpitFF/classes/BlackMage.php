@@ -21,12 +21,11 @@ class BlackMage extends Human {
     /* doAttackをオーバーライド */
     public function doAttack($enemies) {
         
-        if($this->hitPoint <= 0) {
+        if(!$this->isEnableAttack($enemies)) {
             return false;
         }
         
-        $enemyIndex = rand(0, count($enemies) - 1);
-        $enemy = $enemies[$enemyIndex];
+        $enemy = $this->selectTarget($enemies);
         
         if(rand(1,100) >= 50) { // 50%の確率
             echo "「" . $this->getName() . "」は魔法を唱えた！\n";

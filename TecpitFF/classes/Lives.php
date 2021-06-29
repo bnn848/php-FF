@@ -29,7 +29,7 @@ class Lives {
     
     /* getHitPoint() */
     public function getHitPoint() {
-        $result = $this->$hitPoint; // ---> 現在の体力＝攻撃を受けた後のresult
+        $result = $this->hitPoint; // ---> 現在の体力＝攻撃を受けた後のresult
         if($result < 0) {
             $result = 0;
         }
@@ -53,7 +53,7 @@ class Lives {
     }
     
     /* isEnableAttack */ // 死体撃ちしないため
-    public function isEnableAttack() {
+    public function isEnableAttack($targets) {
         
         // (1)自分が死んでいるか？
         if($this->hitPoint <= 0) {
@@ -61,10 +61,10 @@ class Lives {
         }
         
         //(2)敵が全員死んでいるか？
-        $isAlldie = true;
+        $isAllDie = true;
         foreach($targets as $target) {
             if($target->getHitPoint() > 0) {
-                $isAlldie = false;
+                $isAllDie = false;
             }
         }
         if ($isAllDie) {
@@ -94,6 +94,9 @@ class Lives {
         echo "「".$this->getName() . "」の攻撃！\n";
         echo "「".$target->getName() . "」に" . $this->attackPoint . "のダメージ！\n";
         $target->tookDamage($this->attackPoint);
+        if($target->hitPoint <= 0) {
+            echo $target->getName() . "は倒れた。";
+        }
         return true;
     }
     

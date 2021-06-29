@@ -19,12 +19,10 @@ class Brave extends Human {
     
     /* スキルの発動(human.doAttackを上書きする)*/
     public function doAttack($enemies) {
-        if($this->hitPoint <= 0) {
+        if(!$this->isEnableAttack($enemies)) {
             return false;
         }
-        
-        $enemyIndex = rand(0, count($enemies) -1);
-        $enemy = $enemies[$enemyIndex];
+        $enemy = $this->selectTarget($enemies);
         
         if (rand(1, 100) <= 30) { // 30%の確率
             echo "「" . $this->getName() . "」はスキルを発動した！\n";
